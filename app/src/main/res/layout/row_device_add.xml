@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="4dp"
+       >
+
+        <ImageView
+            android:id="@+id/image_new_device_add"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="center"/>
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/gradient_drawable">
+
+
+            <TextView
+                android:id="@+id/device_add_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:ellipsize="end"
+                android:layout_centerInParent="true"
+                android:lines="2"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingTop="4dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Добавить новое устройство"/>
+
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+
+</androidx.cardview.widget.CardView>
+

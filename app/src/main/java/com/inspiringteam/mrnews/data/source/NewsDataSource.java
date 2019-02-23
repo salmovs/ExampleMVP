@@ -12,7 +12,7 @@ import io.reactivex.disposables.Disposable;
  * Repository interface
  */
 
-public interface NewsDataSource {
+public interface  NewsDataSource {
     interface LoadNewsCallback {
         void onDisposableAcquired(Disposable disposable);
 

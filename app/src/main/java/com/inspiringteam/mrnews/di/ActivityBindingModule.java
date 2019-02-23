@@ -1,6 +1,8 @@
 package com.inspiringteam.mrnews.di;
 
 
+import com.inspiringteam.mrnews.device.DeviceActivity;
+import com.inspiringteam.mrnews.device.DeviceModule;
 import com.inspiringteam.mrnews.di.scopes.ActivityScoped;
 import com.inspiringteam.mrnews.news.NewsActivity;
 import com.inspiringteam.mrnews.news.NewsModule;
@@ -21,6 +23,12 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class ActivityBindingModule {
     @ActivityScoped
-    @ContributesAndroidInjector(modules = NewsModule.class)
+    @ContributesAndroidInjector(modules = NewsModule.class )
     abstract NewsActivity newsActivity();
+    //abstract DeviceActivity deviceActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = DeviceModule.class)
+    abstract DeviceActivity deviceActivity();
+
 }
