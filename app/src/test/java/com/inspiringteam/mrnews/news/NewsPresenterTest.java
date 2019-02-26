@@ -1,9 +1,8 @@
 package com.inspiringteam.mrnews.news;
 
-import com.google.common.collect.Lists;
 import com.inspiringteam.mrnews.data.models.News;
-import com.inspiringteam.mrnews.data.source.NewsDataSource;
-import com.inspiringteam.mrnews.data.source.NewsRepository;
+import com.inspiringteam.mrnews.data.source.ApplicationDataSource;
+import com.inspiringteam.mrnews.data.source.ApplicationRepository;
 import com.inspiringteam.mrnews.util.ChromeTabsUtils.ChromeTabsWrapper;
 import com.inspiringteam.mrnews.util.Constants;
 
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.verify;
  */
 public class NewsPresenterTest {
     @Mock
-    private NewsRepository mNewsRepository;
+    private ApplicationRepository mNewsRepository;
 
     @Mock
     private ChromeTabsWrapper mChromeTabsWrapper;
@@ -38,7 +37,7 @@ public class NewsPresenterTest {
     private NewsContract.View mNewsView;
 
     @Captor
-    private ArgumentCaptor<NewsDataSource.LoadNewsCallback> mLoadNewsCallbackCaptor;
+    private ArgumentCaptor<ApplicationDataSource.LoadNewsCallback> mLoadNewsCallbackCaptor;
 
     private NewsPresenter mNewsPresenter;
 

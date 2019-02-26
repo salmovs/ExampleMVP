@@ -1,7 +1,10 @@
 package com.inspiringteam.mrnews.data.source;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.inspiringteam.mrnews.data.models.Devices;
 import com.inspiringteam.mrnews.data.models.News;
 import com.inspiringteam.mrnews.data.source.scopes.Local;
 import com.inspiringteam.mrnews.data.source.scopes.Remote;
@@ -19,18 +22,57 @@ import io.reactivex.disposables.Disposable;
  * News repository which handles all data retrieval logic
  */
 @AppScoped
-public class NewsRepository implements NewsDataSource {
-    private final NewsDataSource mNewsRemoteDataSource;
-    private final NewsDataSource mNewsLocalDataSource;
+public class ApplicationRepository implements ApplicationDataSource {
+    private static final String TAG = "ApplicationRepository";
+
+    private final ApplicationDataSource mNewsRemoteDataSource;
+    private final ApplicationDataSource mApplicationLocalDataSource;
+
+    private final ApplicationDataSource mDevicesDataSource;
     private final OnlineChecker mOnlineChecker;
 
     @Inject
-    NewsRepository(@Remote NewsDataSource newsRemoteDataSource,
-                   @Local NewsDataSource newsLocalDataSource, OnlineChecker onlineChecker) {
+    ApplicationRepository(@Remote ApplicationDataSource newsRemoteDataSource,
+                          @Local ApplicationDataSource applicationLocalDataSource,
+                          @Local ApplicationDataSource devicesDataSource,
+                          OnlineChecker onlineChecker) {
         mNewsRemoteDataSource = newsRemoteDataSource;
-        mNewsLocalDataSource = newsLocalDataSource;
+        //mNewsLocalDataSource = newsLocalDataSource;
+        mApplicationLocalDataSource = applicationLocalDataSource;
+        mDevicesDataSource = devicesDataSource;
         mOnlineChecker = onlineChecker;
     }
+
+    /***
+     * insert table devices
+     */
+
+    @Override
+    public void insertDevice(Devices devices) {
+        Log.d(TAG, "Start insertDEvice Application Repository");
+        mApplicationLocalDataSource.insertDevice(devices);
+
+    }
+
+    /**
+     * Show table devices
+     * @param callback
+     */
+
+    @Override
+    public void getDevices(@NonNull LoadDevicesCallback callback){
+
+        Log.d(TAG, "Start GetDevice Application Repository");
+
+        getDevicesFromLocalDataSource(callback);
+
+        Log.d(TAG,"Start select local base device");
+    }
+
+
+
+
+
 
     /**
      * Online First Scenario
@@ -69,6 +111,9 @@ public class NewsRepository implements NewsDataSource {
         }
     }
 
+
+
+
     /**
      * Offline First Scenario
      * First retrieve only saved news (items) from local DataSource
@@ -76,7 +121,8 @@ public class NewsRepository implements NewsDataSource {
      */
     @Override
     public void getArchivedNews(@NonNull final LoadSavedNewsCallback callback) {
-        mNewsLocalDataSource.getArchivedNews(new LoadSavedNewsCallback() {
+       // mNewsLocalDataSource.getArchivedNews(new LoadSavedNewsCallback() {
+        mApplicationLocalDataSource.getArchivedNews(new LoadSavedNewsCallback() {
             @Override
             public void onNewsLoaded(List<News> news) {
                 callback.onNewsLoaded(news);
@@ -106,8 +152,29 @@ public class NewsRepository implements NewsDataSource {
         });
     }
 
+    private void getDevicesFromLocalDataSource(@NonNull final LoadDevicesCallback callback){
+        mApplicationLocalDataSource.getDevices(new LoadDevicesCallback() {
+            @Override
+            public void onDisposableAcquired(Disposable disposable) {
+                callback.onDisposableAcquired(disposable);
+            }
+
+            @Override
+            public void onDevicesLoaded(List<Devices> devices) {
+                callback.onDevicesLoaded(devices);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+
+            }
+        });
+    }
+
     private void getNewsFromLocalDataSource(String category, @NonNull final LoadNewsCallback callback) {
-        mNewsLocalDataSource.getNews(category, new LoadNewsCallback() {
+        //mNewsLocalDataSource.getNews(category, new LoadNewsCallback() {
+        mApplicationLocalDataSource.getNews(category, new LoadNewsCallback() {
             @Override
             public void onDisposableAcquired(Disposable disposable) {
                 callback.onDisposableAcquired(disposable);
@@ -146,7 +213,8 @@ public class NewsRepository implements NewsDataSource {
      */
     @Override
     public void insertNews(News news) {
-        mNewsLocalDataSource.insertNews(news);
+        //mNewsLocalDataSource.insertNews(news);
+        mApplicationLocalDataSource.insertNews(news);
         mNewsRemoteDataSource.insertNews(news);
     }
 
@@ -155,7 +223,8 @@ public class NewsRepository implements NewsDataSource {
      */
     @Override
     public void updateNews(News news) {
-        mNewsLocalDataSource.updateNews(news);
+        //mNewsLocalDataSource.updateNews(news);
+        mApplicationLocalDataSource.updateNews(news);
         mNewsRemoteDataSource.updateNews(news);
     }
 
@@ -166,7 +235,8 @@ public class NewsRepository implements NewsDataSource {
     @Override
     public void refreshNews(String category) {
         mNewsRemoteDataSource.refreshNews(category);
-        mNewsLocalDataSource.refreshNews(category);
+        mApplicationLocalDataSource.refreshNews(category);
+        //mNewsLocalDataSource.refreshNews(category);
     }
 
     /**
@@ -174,7 +244,8 @@ public class NewsRepository implements NewsDataSource {
      */
     @Override
     public void deleteNews() {
-        mNewsLocalDataSource.deleteNews();
+        //mNewsLocalDataSource.deleteNews();
+        mApplicationLocalDataSource.deleteNews();
         mNewsRemoteDataSource.deleteNews();
     }
 

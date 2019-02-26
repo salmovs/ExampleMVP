@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.inspiringteam.mrnews.R;
+import com.inspiringteam.mrnews.data.models.Devices;
 import com.inspiringteam.mrnews.data.models.News;
 import com.inspiringteam.mrnews.di.scopes.ActivityScoped;
 import com.inspiringteam.mrnews.news.NewsAdapter;
@@ -59,19 +60,36 @@ public class DeviceFragment extends DaggerFragment implements DeviceContract.Vie
     /**
      * No initialize
      */
-    //  DeviceItemListener mNewsItemListener = new DeviceItemListener();
+      DeviceItemListener mDeviceItemListener = new DeviceItemListener(){
+        @Override
+        public void onDeviceClick(Devices clickedDevices) {
+
+        }
+    }
+;
 
     /**
      * Through this interface we establish a communication channel between
      * view (fragment) and its adapter
      */
     public interface DeviceItemListener {
-      //  void onNewsClick(News clickedNews);
+
+        void onDeviceClick(Devices clickedDevices);
+
+
+        //  void onNewsClick(News clickedNews);
       //onAddDeviceClick(News toSaveNews);
 
       //  void onArchiveNewsClick(News toSaveNews);
     }
 
+
+    @Override
+    public void showDevices(List<Devices> devices) {
+        mDeviceAdapter.replaceData(devices);
+        mListViewNews.setSelectionAfterHeaderView();
+        mTextViewNews.setVisibility(View.GONE);
+    }
 
     @Override
     public void getImageLoaderService(Picasso picasso) {
@@ -93,6 +111,7 @@ public class DeviceFragment extends DaggerFragment implements DeviceContract.Vie
         super.onCreate(savedInstanceState);
 
         // Need  initialise adapter
+        mDeviceAdapter = new DeviceAdapter(new ArrayList<Devices>(0), mDeviceItemListener); // Для Items  действие для нажатия);
 
 
 
@@ -111,6 +130,8 @@ public class DeviceFragment extends DaggerFragment implements DeviceContract.Vie
         mTextViewNews = root.findViewById(R.id.no_device_tv);
         mTextViewNews.setVisibility(View.GONE);
 
+
+
         View rowView = inflater.inflate(R.layout.row_device_add, container, true);
         mTextViewAddDevice = rowView.findViewById(R.id.device_add_title);
         mImageViewImageAddDevice = rowView.findViewById(R.id.image_new_device_add);
@@ -126,8 +147,8 @@ public class DeviceFragment extends DaggerFragment implements DeviceContract.Vie
 
 
 
-        mListViewNews.setAdapter(mDeviceAdapter);
 
+        mListViewNews.setAdapter(mDeviceAdapter);
         mDevicePresenter.loadDevices();
 
        // mDevicePresenter.loadNews(Constants.NEWS_CATEGORY_LATEST);
@@ -150,8 +171,10 @@ public class DeviceFragment extends DaggerFragment implements DeviceContract.Vie
 
     @Override
     public void showNews(List<News> news) {
+/*
         mDeviceAdapter.replaceData(news);
         mListViewNews.setSelectionAfterHeaderView();
         mTextViewNews.setVisibility(View.GONE);
+  */
     }
 }

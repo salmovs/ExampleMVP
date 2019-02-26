@@ -29,8 +29,8 @@ public class NewsAdapter extends BaseAdapter {
     private boolean isInternetAccess;
 
     public NewsAdapter(List<News> news, NewsFragment.NewsItemListener itemListener) {
-        setList(news);
-        mItemListener = itemListener;
+            setList(news);
+            mItemListener = itemListener;
     }
 
     @Override

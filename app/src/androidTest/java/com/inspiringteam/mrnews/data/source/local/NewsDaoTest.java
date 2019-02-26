@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class NewsDaoTest {
-    private NewsDatabase mDatabase;
+    private ApplicationDatabase mDatabase;
     private static String mMainCategory = "business";
     private static String mDiffCategory = "technology";
     private static final News mNewsItem1 = new News(56, "title1", "author1", false, mMainCategory);
@@ -38,7 +38,7 @@ public class NewsDaoTest {
         // using an in-memory database because the information stored here disappears when the
         // process is killed
         mDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
-                NewsDatabase.class).build();
+                ApplicationDatabase.class).build();
     }
 
     @After

@@ -20,32 +20,32 @@ import static org.mockito.Mockito.when;
 
 /**
  * Unit tests
- * SUT - {@link NewsRepository}
+ * SUT - {@link ApplicationRepository}
  */
 public class NewsRepositoryTest {
 
-    private NewsRepository mNewsRepository;
+    private ApplicationRepository mNewsRepository;
 
     @Mock
-    private NewsDataSource mNewsRemoteDataSource;
+    private ApplicationDataSource mNewsRemoteDataSource;
 
     @Mock
-    private NewsDataSource mNewsLocalDataSource;
+    private ApplicationDataSource mNewsLocalDataSource;
 
     @Mock
     private OnlineChecker mOnlineChecker;
 
     @Mock
-    private NewsDataSource.LoadNewsCallback mLoadNewsCallback;
+    private ApplicationDataSource.LoadNewsCallback mLoadNewsCallback;
 
     @Mock
-    private NewsDataSource.LoadSavedNewsCallback mLoadSavedNewsCallback;
+    private ApplicationDataSource.LoadSavedNewsCallback mLoadSavedNewsCallback;
 
     @Captor
-    private ArgumentCaptor<NewsDataSource.LoadNewsCallback> mNewsCallbackCaptor;
+    private ArgumentCaptor<ApplicationDataSource.LoadNewsCallback> mNewsCallbackCaptor;
 
     @Captor
-    private ArgumentCaptor<NewsDataSource.LoadSavedNewsCallback> mSavedNewsCallbackCaptor;
+    private ArgumentCaptor<ApplicationDataSource.LoadSavedNewsCallback> mSavedNewsCallbackCaptor;
 
     @Before
     public void setupNewsRepository(){
@@ -53,7 +53,7 @@ public class NewsRepositoryTest {
         MockitoAnnotations.initMocks(this);
 
         // get a reference to the class under test
-        mNewsRepository = new NewsRepository(mNewsRemoteDataSource, mNewsLocalDataSource, mOnlineChecker);
+        mNewsRepository = new ApplicationRepository(mNewsRemoteDataSource, mNewsLocalDataSource, mOnlineChecker);
     }
 
     /**

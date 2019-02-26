@@ -7,14 +7,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "devices")
-public final class Devices {
+@Entity(tableName = "lora_cdr")
+public class LoraCDR {
 
-
-
-    @PrimaryKey(autoGenerate = true)
-
-    @ColumnInfo(name = "entryid")
+    @PrimaryKey
+    @ColumnInfo(name = "cdr_id")
     private int id;
 
     @SerializedName("deveui")
@@ -22,24 +19,11 @@ public final class Devices {
     @ColumnInfo(name = "deveui")
     private String deveui;
 
-    @SerializedName("appeui")
-    @Expose
-    @ColumnInfo(name = "appeui")
-    private String appeui;
-
-
-    public Devices(String deveui, String appeui) {
-        this.deveui = deveui;
-        this.appeui = appeui;
-    }
-
-/*
-    public Devices(int id, String deveui, String appeui) {
+    public LoraCDR(int id, String deveui) {
         this.id = id;
         this.deveui = deveui;
-        this.appeui = appeui;
     }
-*/
+
     public int getId() {
         return id;
     }
@@ -54,13 +38,5 @@ public final class Devices {
 
     public void setDeveui(String deveui) {
         this.deveui = deveui;
-    }
-
-    public String getAppeui() {
-        return appeui;
-    }
-
-    public void setAppeui(String appeui) {
-        this.appeui = appeui;
     }
 }

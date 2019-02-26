@@ -1,5 +1,6 @@
 package com.inspiringteam.mrnews.device;
 
+import com.inspiringteam.mrnews.data.models.Devices;
 import com.inspiringteam.mrnews.data.models.News;
 import com.inspiringteam.mrnews.mvp.BaseView;
 import com.inspiringteam.mrnews.news.NewsContract;
@@ -17,6 +18,8 @@ public interface DeviceContract{
         void showNoNews();
 
         void getImageLoaderService(Picasso picasso);
+
+        void showDevices(List<Devices> devices);
 
         void showNoDevice();
 

@@ -3,9 +3,10 @@ package com.inspiringteam.mrnews.data.source.remote;
 
 import androidx.annotation.NonNull;
 
+import com.inspiringteam.mrnews.data.models.Devices;
 import com.inspiringteam.mrnews.data.models.News;
 import com.inspiringteam.mrnews.data.models.NewsResponse;
-import com.inspiringteam.mrnews.data.source.NewsDataSource;
+import com.inspiringteam.mrnews.data.source.ApplicationDataSource;
 import com.inspiringteam.mrnews.di.scopes.AppScoped;
 import com.inspiringteam.mrnews.util.Constants;
 
@@ -24,11 +25,11 @@ import io.reactivex.schedulers.Schedulers;
  * Remote Data Source implementation
  */
 @AppScoped
-public class NewsRemoteDataSource implements NewsDataSource {
+public class ApplicationRemoteDataSource implements ApplicationDataSource {
     private NewsService mNewsService;
 
     @Inject
-    public NewsRemoteDataSource(NewsService newsService) {
+    public ApplicationRemoteDataSource(NewsService newsService) {
         mNewsService = newsService;
     }
 
@@ -66,6 +67,11 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
     }
 
+    @Override
+    public void getDevices(@NonNull LoadDevicesCallback callback) {
+
+    }
+
     /**
      * These methods should be implemented when required
      * (e.g. when a cloud service is integrated)
@@ -90,5 +96,10 @@ public class NewsRemoteDataSource implements NewsDataSource {
 
     @Override
     public void deleteNews() {
+    }
+
+    @Override
+    public void insertDevice(Devices devices) {
+
     }
 }

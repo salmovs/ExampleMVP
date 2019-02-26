@@ -1,9 +1,12 @@
 package com.inspiringteam.mrnews.data.source.local;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.inspiringteam.mrnews.data.models.Devices;
 import com.inspiringteam.mrnews.data.models.News;
-import com.inspiringteam.mrnews.data.source.NewsDataSource;
+import com.inspiringteam.mrnews.data.source.ApplicationDataSource;
 import com.inspiringteam.mrnews.di.scopes.AppScoped;
 import com.inspiringteam.mrnews.util.ExecutorUtils.AppExecutors;
 
@@ -18,14 +21,61 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 
 @AppScoped
-public class NewsLocalDataSource implements NewsDataSource {
+public class NewsLocalDataSource implements ApplicationDataSource {
+    private static final String TAG ="NewsLocalDataSource";
+
     private final NewsDao mNewsDao;
+    private final DevicesDao mDevicesDao;
     private final AppExecutors mAppExecutors;
 
     @Inject
-    public NewsLocalDataSource(@NonNull AppExecutors executors, @NonNull NewsDao newsDao) {
+    public NewsLocalDataSource(@NonNull AppExecutors executors, @NonNull NewsDao newsDao, @NonNull DevicesDao devicesDao) {
+        mDevicesDao = devicesDao;
         mNewsDao = newsDao;
         mAppExecutors = executors;
+    }
+
+    /**
+     *
+     * insert at table device new device
+     */
+    @Override
+    public void insertDevice(@NonNull final Devices devices) {
+
+        // let's fail fast
+        checkNotNull(devices);
+        Log.d(TAG,"Failt Null Device");
+
+        Runnable saveRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mDevicesDao.insertDevices(devices);
+            }
+        };
+        mAppExecutors.diskIO().execute(saveRunnable);
+
+    }
+
+    @Override
+    public void getDevices(@NonNull final LoadDevicesCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final List<Devices> tasks = mDevicesDao.getDevices();
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (tasks.isEmpty()) {
+                            // This will be called if the table is new or just empty.
+                            callback.onDataNotAvailable();
+                        } else {
+                            callback.onDevicesLoaded(tasks);
+                        }
+                    }
+                });
+            }
+        };
+        mAppExecutors.diskIO().execute(runnable);
     }
 
     /**

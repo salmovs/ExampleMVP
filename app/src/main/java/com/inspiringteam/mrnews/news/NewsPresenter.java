@@ -1,9 +1,9 @@
 package com.inspiringteam.mrnews.news;
 
+import com.inspiringteam.mrnews.data.source.ApplicationDataSource;
 import com.inspiringteam.mrnews.mvp.BasePresenter;
 import com.inspiringteam.mrnews.data.models.News;
-import com.inspiringteam.mrnews.data.source.NewsDataSource;
-import com.inspiringteam.mrnews.data.source.NewsRepository;
+import com.inspiringteam.mrnews.data.source.ApplicationRepository;
 import com.inspiringteam.mrnews.di.scopes.ActivityScoped;
 import com.inspiringteam.mrnews.util.ChromeTabsUtils.ChromeTabsWrapper;
 import com.inspiringteam.mrnews.util.EspressoIdlingResource;
@@ -21,12 +21,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @ActivityScoped
 public class NewsPresenter extends BasePresenter<NewsContract.View> implements NewsContract.Presenter {
-    private final NewsRepository mNewsRepository;
+    private final ApplicationRepository mNewsRepository;
     private CompositeDisposable disposables;
     private final ChromeTabsWrapper mTabsWrapper;
 
     @Inject
-    NewsPresenter(NewsRepository newsRepository, CompositeDisposable disposable,
+    NewsPresenter(ApplicationRepository newsRepository, CompositeDisposable disposable,
                   ChromeTabsWrapper tabsWrapper) {
         disposables = disposable;
         mNewsRepository = newsRepository;
@@ -46,7 +46,7 @@ public class NewsPresenter extends BasePresenter<NewsContract.View> implements N
         // that the app is busy until the response is handled.
         notifyEspressoAppIsBusy();
 
-        mNewsRepository.getNews(category, new NewsDataSource.LoadNewsCallback() {
+        mNewsRepository.getNews(category, new ApplicationDataSource.LoadNewsCallback() {
             @Override
             public void onDisposableAcquired(Disposable disposable) {
                 addDisposable(disposable);
@@ -71,7 +71,7 @@ public class NewsPresenter extends BasePresenter<NewsContract.View> implements N
      */
     @Override
     public void loadSavedNews() {
-        mNewsRepository.getArchivedNews(new NewsDataSource.LoadSavedNewsCallback() {
+        mNewsRepository.getArchivedNews(new ApplicationDataSource.LoadSavedNewsCallback() {
             @Override
             public void onNewsLoaded(List<News> news) {
                 processDataToBeDisplayed(news);

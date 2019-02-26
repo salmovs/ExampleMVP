@@ -3,7 +3,7 @@ package com.inspiringteam.mrnews.di;
 
 import android.app.Application;
 
-import com.inspiringteam.mrnews.data.source.NewsRepositoryModule;
+import com.inspiringteam.mrnews.data.source.ApplicatinRepositoryModule;
 import com.inspiringteam.mrnews.di.scopes.AppScoped;
 
 import dagger.BindsInstance;
@@ -18,7 +18,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
  * and location of subcomponents, which will be in our case, activities
  */
 @AppScoped
-@Component(modules = {NewsRepositoryModule.class,
+@Component(modules = {ApplicatinRepositoryModule.class,
         AppModule.class,
         UtilityModule.class,
         ActivityBindingModule.class,

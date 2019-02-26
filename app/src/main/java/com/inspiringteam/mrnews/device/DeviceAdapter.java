@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.inspiringteam.mrnews.R;
+import com.inspiringteam.mrnews.data.models.Devices;
 import com.inspiringteam.mrnews.data.models.News;
 import com.inspiringteam.mrnews.util.SortUtils;
 import com.squareup.picasso.NetworkPolicy;
@@ -22,10 +23,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DeviceAdapter extends BaseAdapter {
 
     private List<News> mNewsList = new ArrayList<>();
+    private List<Devices> mDevices = new ArrayList<>();
 
 
     private Picasso mPicasso;
     private boolean isInternetAccess;
+
+    private DeviceFragment.DeviceItemListener  mItemListener;
 
 
 
@@ -33,18 +37,21 @@ public class DeviceAdapter extends BaseAdapter {
 
     }
 
-
+    public DeviceAdapter(List<Devices> devices, DeviceFragment.DeviceItemListener itemListener) {
+        setList(devices);
+        mItemListener = itemListener;
+    }
 
 
 
     @Override
     public int getCount() {
-        return mNewsList.size();
+        return mDevices.size();
     }
 
     @Override
-    public News getItem(int position) {
-        return mNewsList.get(position);
+    public Devices getItem(int position) {
+        return mDevices.get(position);
     }
 
     @Override
@@ -53,27 +60,35 @@ public class DeviceAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int i, View view, ViewGroup viewGroup) {
 
-        View rowView = convertView;
+        View rowView = view;
         if (rowView == null){
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            rowView = inflater.inflate(R.layout.row_news_item, parent, false);
+            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+            rowView = inflater.inflate(R.layout.row_news_item, viewGroup, false);
         }
 
-        final News currentNews = getItem(position);
+        final Devices currentDevice = getItem(i);
 
-        final ImageView newsImageView = rowView.findViewById(R.id.news_image_id);
+        //final ImageView newsImageView = rowView.findViewById(R.id.news_image_id);
         final TextView newsTitleTextView = rowView.findViewById(R.id.news_title_view);
         final TextView sourceTextView = rowView.findViewById(R.id.news_source_view);
-        final ImageButton archiveImagebutton = rowView.findViewById(R.id.archive_news_ib);
-        final TextView newsDateTextView = rowView.findViewById(R.id.news_date_view);
-        archiveImagebutton.setVisibility(View.VISIBLE);
+        //final ImageButton archiveImagebutton = rowView.findViewById(R.id.archive_news_ib);
+        //final TextView newsDateTextView = rowView.findViewById(R.id.news_date_view);
+        //archiveImagebutton.setVisibility(View.VISIBLE);
 
+        newsTitleTextView.setText(currentDevice.getDeveui());
+
+        sourceTextView.setText(currentDevice.getDeveui());
+
+
+
+        /*
         if (currentNews.isArchived()) {
             archiveImagebutton.setVisibility(View.GONE);
         }
-
+        */
+/*
         if (mPicasso != null) {
             if (isInternetAccess) {
                 mPicasso.load(currentNews.getUrlToImage()).networkPolicy(NetworkPolicy.NO_CACHE)
@@ -95,7 +110,7 @@ public class DeviceAdapter extends BaseAdapter {
         }
 
         newsDateTextView.setText(SortUtils.getDateDisplayString(currentNews.getPublishedAt()));
-
+*/
 
         // Need Onclick
 
@@ -103,17 +118,17 @@ public class DeviceAdapter extends BaseAdapter {
         return rowView;
     }
 
-    public void replaceData(List<News> news) {
-        setList(news);
+    public void replaceData(List<Devices> devices) {
+        setList(devices);
         notifyDataSetChanged();
     }
 
-    public void setList(List<News> news) {
-        mNewsList = checkNotNull(news);
+    public void setList(List<Devices> devices) {
+        mDevices = checkNotNull(devices);
     }
 
     public void clearContent() {
-        mNewsList.clear();
+        mDevices.clear();
     }
 
     public void setImageLoaderService(Picasso picasso) {

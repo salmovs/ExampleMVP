@@ -5,7 +5,7 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.inspiringteam.mrnews.data.models.News;
-import com.inspiringteam.mrnews.data.source.NewsDataSource;
+import com.inspiringteam.mrnews.data.source.ApplicationDataSource;
 import com.inspiringteam.mrnews.util.Constants;
 import com.inspiringteam.mrnews.utils.SingleExecutors;
 
@@ -34,13 +34,13 @@ import static org.mockito.Mockito.verify;
 public class NewsLocalDataSourceTest {
     private NewsLocalDataSource mLocalDataSource;
 
-    private NewsDatabase mDatabase;
+    private ApplicationDatabase mDatabase;
 
     @Before
     public void setup() {
         // using an in-memory database for testing, since it doesn't survive killing the process
         mDatabase = Room.inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(),
-                NewsDatabase.class)
+                ApplicationDatabase.class)
                 .build();
         NewsDao tasksDao = mDatabase.newsDao();
 
@@ -71,7 +71,7 @@ public class NewsLocalDataSourceTest {
         mLocalDataSource.insertNews(Constants.TEST_NEWS_2.get(1));
 
         // Then the tasks can be retrieved from the persistent repository
-        mLocalDataSource.getNews(Constants.NEWS_CATEGORY_LATEST, new NewsDataSource.LoadNewsCallback() {
+        mLocalDataSource.getNews(Constants.NEWS_CATEGORY_LATEST, new ApplicationDataSource.LoadNewsCallback() {
             @Override
             public void onDisposableAcquired(Disposable disposable) {
             }
@@ -111,8 +111,8 @@ public class NewsLocalDataSourceTest {
     @Test
     public void retrieveArchivedUnarchivedNews_Scenario() {
         // Initialize mocks for the callbacks.
-        NewsDataSource.LoadNewsCallback callbackUnarchived = mock(NewsDataSource.LoadNewsCallback.class);
-        NewsDataSource.LoadSavedNewsCallback callbackArchived = mock(NewsDataSource.LoadSavedNewsCallback.class);
+        ApplicationDataSource.LoadNewsCallback callbackUnarchived = mock(ApplicationDataSource.LoadNewsCallback.class);
+        ApplicationDataSource.LoadSavedNewsCallback callbackArchived = mock(ApplicationDataSource.LoadSavedNewsCallback.class);
 
         // insert news (items)
         for(News newsItem : Constants.TEST_NEWS_2) mLocalDataSource.insertNews(newsItem);
@@ -140,7 +140,7 @@ public class NewsLocalDataSourceTest {
     @Test
     public void deleteAllNewsAndRetrieve_Scenario() {
         mLocalDataSource.insertNews(Constants.TEST_NEWS_2.get(0));
-        NewsDataSource.LoadNewsCallback callback = mock(NewsDataSource.LoadNewsCallback.class);
+        ApplicationDataSource.LoadNewsCallback callback = mock(ApplicationDataSource.LoadNewsCallback.class);
 
         // When all news (items) are deleted
         mLocalDataSource.deleteNews();

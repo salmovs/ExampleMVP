@@ -2,11 +2,9 @@ package com.inspiringteam.mrnews.data.source.remote;
 
 
 
-import com.google.common.collect.Lists;
-import com.inspiringteam.mrnews.data.models.News;
+import com.inspiringteam.mrnews.data.source.ApplicationDataSource;
 import com.inspiringteam.mrnews.rules.RxSchedulersOverrideRule;
 import com.inspiringteam.mrnews.data.models.NewsResponse;
-import com.inspiringteam.mrnews.data.source.NewsDataSource;
 import com.inspiringteam.mrnews.util.Constants;
 
 import org.junit.Before;
@@ -16,23 +14,18 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Observable;
 
 import io.reactivex.Single;
-import io.reactivex.exceptions.Exceptions;
-import retrofit2.HttpException;
 
 import static io.reactivex.Observable.error;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
  * Test
- * SUT - {@link NewsRemoteDataSource}
+ * SUT - {@link ApplicationRemoteDataSource}
  */
 public class NewsRemoteDataSourceTest {
 
@@ -42,7 +35,7 @@ public class NewsRemoteDataSourceTest {
     @Mock
     NewsService newsService;
 
-    private NewsRemoteDataSource mRemoteDataSource;
+    private ApplicationRemoteDataSource mRemoteDataSource;
 
     @Before
     public void setup() throws Exception {
@@ -50,7 +43,7 @@ public class NewsRemoteDataSourceTest {
         MockitoAnnotations.initMocks(this);
 
         // get reference to the class in test
-        mRemoteDataSource = new NewsRemoteDataSource(newsService);
+        mRemoteDataSource = new ApplicationRemoteDataSource(newsService);
 
     }
 
@@ -67,7 +60,7 @@ public class NewsRemoteDataSourceTest {
     @Test
     public void testRemoteApiResponse() throws Exception{
         // set up mock callback
-        NewsDataSource.LoadNewsCallback newsCallback = mock(NewsDataSource.LoadNewsCallback.class);
+        ApplicationDataSource.LoadNewsCallback newsCallback = mock(ApplicationDataSource.LoadNewsCallback.class);
 
         // set up mock response
         NewsResponse mockNewsResponse = new NewsResponse();
